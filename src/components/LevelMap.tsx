@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getLevelId, getMaxCompletedDepth } from '../logic/levels';
+import { getLevelId, getMaxCompletedDepth, getSeed, parseLevelId } from '../logic/levels';
 
 interface LevelMapProps {
     completedLevels: string[];
@@ -155,6 +155,9 @@ export const LevelMap: React.FC<LevelMapProps> = ({ completedLevels, levelScores
 
                         const renderNode = (id: string, completed: boolean, x: string) => {
                             const score = levelScores[id];
+                            const sides = parseLevelId(id);
+                            const levelNum = sides ? getSeed(sides.depth, sides.side) : '?';
+
                             return (
                                 <div
                                     key={id}
@@ -195,7 +198,7 @@ export const LevelMap: React.FC<LevelMapProps> = ({ completedLevels, levelScores
                                         }
                                     }}
                                 >
-                                    <div>{depth}</div>
+                                    <div>{levelNum}</div>
                                     {score !== undefined && (
                                         <div style={{
                                             position: 'absolute',

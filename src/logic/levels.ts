@@ -19,10 +19,11 @@ export const parseLevelId = (id: string): { depth: number, side: 'left' | 'right
 };
 
 export const getSeed = (depth: number, side: 'left' | 'right'): number => {
-    // Deterministic seed generation based on depth and side
-    // Using a prime multiplier to spread seeds out
-    const base = depth * 1000;
-    return base + (side === 'left' ? 1 : 2);
+    // Iterative seed generation:
+    // Left side = Odd numbers (1, 3, 5...)
+    // Right side = Even numbers (2, 4, 6...)
+    // Level = Seed
+    return depth * 2 + (side === 'left' ? 1 : 2);
 };
 
 export const getMaxCompletedDepth = (completedLevels: string[]): number => {
