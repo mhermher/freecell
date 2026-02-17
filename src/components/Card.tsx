@@ -32,23 +32,24 @@ const getRankSymbol = (rank: number): string => {
 };
 
 export const Card: React.FC<CardProps> = ({ card, isSelected, isAutoMovable, isShaking, isTarget, onClick, onLongPress, style }) => {
-    const borderColor = isAutoMovable
-        ? '#60a5fa' // Blue for auto-movable
-        : card.movable
-            ? '#fbbf24' // Gold for movable
-            : '#999'; // Gray for default
+    const isImmovable = !card.movable;
+
+    // Background Styling
+    const backgroundColor = isAutoMovable
+        ? '#fef08a' // Golden/Yellow tint for auto-movable
+        : isImmovable
+            ? '#e2e8f0' // Grey/Slate tint for disabled/immovable
+            : 'var(--card-bg)'; // White for standard movable cards
+
+    // Border & Shadow (Simplified)
+    const borderColor = '#94a3b8'; // Slate-400 for standard border
+    const borderWidth = '1px';
 
     const boxShadow = isTarget
         ? '0 0 10px 4px rgba(74, 222, 128, 0.8)' // Green glow for target
         : isSelected
             ? 'var(--card-selected-shadow)'
-            : isAutoMovable
-                ? '0 0 8px rgba(96, 165, 250, 0.6)' // Blue glow
-                : card.movable
-                    ? '0 0 5px rgba(251, 191, 36, 0.5)' // Gold glow
-                    : 'var(--card-shadow)';
-
-    const borderWidth = isAutoMovable || card.movable ? '2px' : '1px';
+            : 'var(--card-shadow)';
 
     const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     const isLongPress = React.useRef(false);
@@ -90,7 +91,7 @@ export const Card: React.FC<CardProps> = ({ card, isSelected, isAutoMovable, isS
                 ...style,
                 width: 'var(--card-width)',
                 height: 'var(--card-height)',
-                backgroundColor: 'var(--card-bg)',
+                backgroundColor: backgroundColor,
                 borderRadius: '0.5rem',
                 border: `${borderWidth} solid ${borderColor}`,
                 boxShadow: boxShadow,
